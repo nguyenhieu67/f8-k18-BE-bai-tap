@@ -83,14 +83,14 @@ movieTicketPrice(13);
 movieTicketPrice(12);
 
 // Task 5:
-function temperatureConversion(temp) {
+function toFahrenheit(temp) {
     if (typeof temp !== "number" || isNaN(temp))
         return console.log("Please enter a valid number.");
     temp = temp * 1.8 + 32;
     return console.log(`Fahrenheit is ${temp}`);
 }
 
-temperatureConversion(6);
+toFahrenheit(6);
 
 // Task 6:
 function getElectricityBill(num) {
