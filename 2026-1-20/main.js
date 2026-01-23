@@ -1,3 +1,77 @@
+// const products = [
+//     { id: 1, name: "iPhone", price: 2000 },
+//     { id: 2, name: "Samsung", price: 1500 },
+//     { id: 3, name: "Xiaomi", price: 1000 },
+//     { id: 4, name: "Oppo", price: 1200 },
+// ];
+
+// const orders = [
+//     {
+//         id: 1,
+//         items: [
+//             { productId: 1, quantity: 2 },
+//             { productId: 2, quantity: 1 },
+//         ],
+//     },
+//     {
+//         id: 2,
+//         items: [
+//             { productId: 1, quantity: 1 },
+//             { productId: 3, quantity: 3 },
+//         ],
+//     },
+//     {
+//         id: 3,
+//         items: [
+//             { productId: 2, quantity: 2 },
+//             { productId: 4, quantity: 1 },
+//         ],
+//     },
+// ];
+
+// const createHashMap = (arr) => {
+//     if (!Array.isArray(arr)) return console.error("Invalid input");
+//     const map = {};
+//     arr.forEach(item => map[item.id] = item)
+//     return map;
+// };
+
+// const findTopRevenue = (arr, orders) => {
+//     if (!Array.isArray(arr) || !Array.isArray(orders)) {
+//         return "Invalid input";
+//     }
+//     if (arr.length === 0 || orders.length === 0) {
+//         return "Invalid input";
+//     }
+
+//     const productMap = createHashMap(arr);
+//     const revenueMap = {};
+//     let topRevenue = 0;
+//     let topProductId = null;
+
+//     for (const order of orders) {
+//         for (const item of order.items) {
+//             const { productId, quantity } = item;
+//             const product = productMap[productId];
+//             if (!product) return;
+
+//             if (!revenueMap[productId]) {
+//                 revenueMap[productId] = 0;
+//             }
+
+//             revenueMap[productId] += product.price * quantity;
+//             if (revenueMap[productId] > topRevenue) {
+//                 topRevenue = revenueMap[productId];
+//                 topProductId = productId;
+//             }
+//         }
+//     }
+
+//     return productMap[topProductId];
+// };
+
+// console.log(findTopRevenue(products, orders));
+
 const products = [
     { id: 1, name: "iPhone", price: 2000, quantity: 10 },
     { id: 2, name: "Samsung", price: 1500, quantity: 10 },
@@ -9,10 +83,15 @@ const orders = [];
 const createHashMap = (arr) => {
     if (!Array.isArray(arr)) return;
     const map = {};
-    for (let i = 0; i < arr.length; i++) {
-        const item = arr[i];
-        map[item.id] = item;
-    }
+
+    // Before
+    // for (let i = 0; i < arr.length; i++) {
+    //     const item = arr[i];
+    //     map[item.id] = item;
+    // }
+
+    // After
+    arr.forEach((item) => (map[item.id] = item));
     return map;
 };
 const createOrder = (productId, orderQuantity) => {
@@ -53,11 +132,14 @@ const updateOrder = (orderId, quantity) => {
     const orderMap = createHashMap(orders);
     const order = orderMap[orderId];
     if (!order) return console.error("Order not found");
+
     const productMap = createHashMap(products);
     const product = productMap[order.productId];
     if (!product) return console.error("Product not found");
+
     const oldQuantity = order.orderQuantity;
     const newQuantity = quantity - oldQuantity;
+
     if (newQuantity > 0) {
         if (product.quantity < newQuantity)
             return console.error("Out of stock");
@@ -74,13 +156,19 @@ const deleteOrder = (orderId) => {
     const order = orderMap[orderId];
     if (!order) return console.error("Order not found");
 
-    for (let i = 0; i < orders.length; i++) {
-        const item = orders[i];
-        if (item.id === orderId) {
-            orders.splice(i, 1);
-            break;
-        }
-    }
+    // Before
+    // for (let i = 0; i < orders.length; i++) {
+    //     const item = orders[i];
+    //     if (item.id === orderId) {
+    //         orders.splice(i, 1);
+    //         break;
+    //     }
+    // }
+
+    // After
+    const findId = orders.indexOf(order);
+    orders.splice(findId, 1);
+
     const productMap = createHashMap(products);
     const product = productMap[order.productId];
     if (!product) return console.error("Product not found");

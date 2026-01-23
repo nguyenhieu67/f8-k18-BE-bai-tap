@@ -38,14 +38,14 @@ const findTopRevenue = (arr, orders) => {
     }
 
     const productPriceMap = {};
-    const productNameMap = {};
+    const productRevenueMap = {};
     const revenueMap = {};
     let topRevenue = 0;
     let topProductId = null;
 
     for (const product of products) {
         productPriceMap[product.id] = product.price;
-        productNameMap[product.id] = product.name;
+        productRevenueMap[product.id] = product;
     }
 
     for (const order of orders) {
@@ -68,9 +68,7 @@ const findTopRevenue = (arr, orders) => {
         }
     }
 
-    const name = productNameMap[topProductId];
-
-    return name;
+    return productRevenueMap[topProductId];
 };
 
 console.log(findTopRevenue(products, orders));
